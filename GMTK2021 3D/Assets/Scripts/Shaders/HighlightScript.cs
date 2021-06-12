@@ -10,14 +10,21 @@ public class HighlightScript : MonoBehaviour
     float CurrentFloat;
     Material mat;
     Coroutine routineTemp;
+    bool Activated;
 
     public void Start()
     {
         mat = GetComponent<MeshRenderer>().material;
+        Activated = true;
+        TurnOffHighlights();
     }
     public void TurnOnHighlights()
     {
-        if(routineTemp != null)
+        if (Activated)
+            return;
+
+        Activated = true;
+        if (routineTemp != null)
             StopCoroutine(routineTemp);
         routineTemp = StartCoroutine(LerpHighlights(true));
     }
@@ -44,6 +51,9 @@ public class HighlightScript : MonoBehaviour
 
     public void TurnOffHighlights()
     {
+        if (!Activated)
+            return;
+        Activated = false;
         if (routineTemp != null)
             StopCoroutine(routineTemp);
         routineTemp = StartCoroutine(LerpHighlights(false));
