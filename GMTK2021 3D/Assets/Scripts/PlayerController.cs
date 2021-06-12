@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
         if (inputDisabledTimer < 0)
         {
             inputVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-            rb.velocity = playerDirReference.transform.TransformDirection(new Vector3(inputVector.x * (speed - parts.Count), rb.velocity.y, inputVector.y * (speed - parts.Count)));
+            rb.velocity = playerDirReference.transform.TransformDirection(new Vector3(inputVector.x * (speed - parts.Count), 0, inputVector.y * (speed - parts.Count)));
 
         }
 

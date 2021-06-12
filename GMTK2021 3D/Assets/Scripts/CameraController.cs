@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject target;
-    public Vector3 offset;
+    //public GameObject target;
+    //public Vector3 offset;
 
     public GameObject blocking;
 
@@ -18,7 +18,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = target.transform.position + offset;
+        //transform.position = target.transform.position + offset;
 
         Ray ray = Camera.main.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
         RaycastHit hit;

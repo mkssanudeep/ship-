@@ -23,6 +23,7 @@ public class Part : MonoBehaviour
             highlight.TurnOnHighlights();
             if (Input.GetKeyDown(KeyCode.E))
             {
+                //DisablePhysics();
                 interaction.player.GetComponent<PlayerController>().AddPart(gameObject);
                 interaction.gameObject.SetActive(false);
             }
@@ -41,4 +42,11 @@ public class Part : MonoBehaviour
             charged = false;
         }
     }
+
+    void DisablePhysics()
+    {
+        this.GetComponent<Rigidbody>().detectCollisions = false;
+        this.GetComponent<Rigidbody>().isKinematic = true;
+    }
+
 }

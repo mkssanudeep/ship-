@@ -47,7 +47,7 @@ Shader "Custom/Masking_Outline"
 				Tags { "LightMode" = "Always" }
 				Cull Off
 				ZWrite Off
-				//ZTest Always
+				ZTest Always
 				ColorMask RGB 
 				
 				Blend SrcAlpha OneMinusSrcAlpha
