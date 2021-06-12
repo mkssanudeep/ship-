@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Stalwart
   - Leg
+  - Floor
   layers:
   - Default
   - TransparentFX

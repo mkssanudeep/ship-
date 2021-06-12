@@ -5,13 +5,13 @@ using UnityEngine;
 public class Part : MonoBehaviour
 {
     public InteractionField interaction;
-
-    HighlightScript highlight;
+    public bool charged;
+    public Stun stun;
 
     // Start is called before the first frame update
     void Start()
     {
-        highlight = GetComponent<HighlightScript>();
+        
     }
 
     // Update is called once per frame
@@ -19,16 +19,20 @@ public class Part : MonoBehaviour
     {
         if (interaction.isActiveAndEnabled && interaction.player != null)
         {
-            highlight.TurnOnHighlights();
             if (Input.GetKeyDown(KeyCode.E))
             {
                 interaction.player.GetComponent<PlayerController>().AddPart(gameObject);
                 interaction.gameObject.SetActive(false);
             }
         }
-        else
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (charged)
         {
-            highlight.TurnOffHighlights();
+            stun.Activate();
+            charged = false;
         }
     }
 }
