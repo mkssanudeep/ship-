@@ -18,17 +18,16 @@ public class Stun : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
-        //When the player presses space, tell all objects in the stunfield to be stunned
-        if (Input.GetKeyDown(KeyCode.Space))
+    }
+
+    public void Activate()
+    {
+        if (timer < 0)
         {
-            if (timer < 0)
+            timer = stunCooldown;
+            foreach (StalwartController s in stunField.objectsInField)
             {
-                Debug.Log("stunning");
-                timer = stunCooldown;
-                foreach (StalwartController s in stunField.objectsInField)
-                {
-                    s.Stun();
-                }
+                s.Stun();
             }
         }
     }

@@ -33,8 +33,4 @@ public class StepHelper : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawRay(transform.position, -transform.parent.transform.right);
-    }
 }
