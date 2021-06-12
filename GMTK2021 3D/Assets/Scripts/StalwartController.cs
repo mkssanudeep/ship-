@@ -36,7 +36,10 @@ public class StalwartController : MonoBehaviour
                 Attack();
             }
         }
-        
+        else
+        {
+            agent.SetDestination(transform.position);
+        }
     }
 
     private void Attack()
