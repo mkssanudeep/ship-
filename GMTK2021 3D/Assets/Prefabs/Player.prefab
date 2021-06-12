@@ -117,7 +117,8 @@ MonoBehaviour:
   playerDirReference: {fileID: 0}
   speed: 5
   health: 20
-  stun: {fileID: 0}
+  stun: {fileID: 7218575180488207976}
+  partPositions: []
 --- !u!114 &7218575180488207976
 MonoBehaviour:
   m_ObjectHideFlags: 0
