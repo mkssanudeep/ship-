@@ -28,12 +28,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _ColorStrength: 1
+    - _ColorStrength: 2
     - _EmissionColor: 1
-    - _EmissionStrength: 1
+    - _EmissionStrength: 4
     - _Glossiness: 0.5
     - _Metallic: 0
     m_Colors:
     - _Color: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 1}
-    - _EmissionColor: {r: 0.6698113, g: 0.29799768, b: 0, a: 1}
+    - _EmissionColor: {r: 1, g: 0.44444445, b: 0, a: 1}
   m_BuildTextureStacks: []
