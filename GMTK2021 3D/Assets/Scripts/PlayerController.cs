@@ -17,9 +17,12 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     public Vector2 inputVector;
     public GameObject playerDirReference;
+    public GameObject playerContainer;
     public float speed;
     public int health;
     public Stun stun;
+    private StepHelper stepHelper;
+    public ShaderPointTracker colorShader;
 
     private Dictionary<PartSlot, GameObject> parts = new Dictionary<PartSlot, GameObject>();
     public List<Vector3> partPositions;
@@ -28,6 +31,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        stepHelper = GetComponent<StepHelper>();
+        stepHelper.enabled = false;
     }
 
     public void Hit(int damage)
@@ -38,8 +43,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(transform.forward);
-
+        colorShader.RadiusIndex = parts.Count;
         //take input and transate it to the camera
         inputVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         rb.velocity = playerDirReference.transform.TransformDirection(new Vector3(inputVector.x * speed, rb.velocity.y, inputVector.y * speed));
@@ -65,6 +69,14 @@ public class PlayerController : MonoBehaviour
             Stabilize();
             FaceMovementDirection();
         }
+        if (parts.ContainsKey(PartSlot.LeftLeg) && parts.ContainsKey(PartSlot.RightLeg))
+        {
+            stepHelper.enabled = true;
+        }
+        else
+        {
+            stepHelper.enabled = false;
+        }
     }
 
     private void Stabilize()
@@ -73,16 +85,17 @@ public class PlayerController : MonoBehaviour
         if (angle > 0.001)
         {
             var axis = Vector3.Cross(transform.up, Vector3.up);
-            rb.AddTorque(axis * angle * 0.5f);
+            rb.AddTorque(axis * angle * 1f);
         }
     }
 
     private void FaceMovementDirection()
     {
-        if (rb.velocity.x > 0.1 || rb.velocity.z > 0.1)
+        if ((rb.velocity.x > 0.1 || rb.velocity.x < -0.1 || rb.velocity.z > 0.1 || rb.velocity.z < -0.1))
         {
+            Debug.Log("facing forward");
             Vector3 fakefacing = Vector2.Perpendicular(new Vector2(-rb.velocity.x, -rb.velocity.z));
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(new Vector3(fakefacing.x, 0, fakefacing.y)), 1f);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(new Vector3(fakefacing.x, 0, fakefacing.y)), 5f);
         }
         
     }

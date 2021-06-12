@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4927481026497465260}
   - component: {fileID: 1270700543474869315}
   - component: {fileID: 4740032143596546020}
+  - component: {fileID: 6914640269592550303}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -118,6 +119,8 @@ MonoBehaviour:
   speed: 5
   health: 20
   stun: {fileID: 7218575180488207976}
+  colorShader: {fileID: 4740032143596546020}
+  partPositions: []
 --- !u!114 &7218575180488207976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,6 +182,20 @@ MonoBehaviour:
   - {x: 3, y: 1}
   RadiusGrowSpeed: 2
   RadiusIndex: 0
+--- !u!114 &6914640269592550303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832985667968128826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6587b6f7f6d2bd45a3770bca7f320de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 0.25, z: 0}
+  distance: 0.4
 --- !u!1 &4534049864875816602
 GameObject:
   m_ObjectHideFlags: 0
