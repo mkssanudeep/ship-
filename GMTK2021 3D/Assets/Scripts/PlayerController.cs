@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(transform.forward);
+
         //take input and transate it to the camera
         inputVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         rb.velocity = playerDirReference.transform.TransformDirection(new Vector3(inputVector.x * speed, rb.velocity.y, inputVector.y * speed));
@@ -61,6 +63,7 @@ public class PlayerController : MonoBehaviour
         if (parts.ContainsKey(PartSlot.LeftLeg) || parts.ContainsKey(PartSlot.RightLeg))
         {
             Stabilize();
+            FaceMovementDirection();
         }
     }
 
@@ -72,6 +75,16 @@ public class PlayerController : MonoBehaviour
             var axis = Vector3.Cross(transform.up, Vector3.up);
             rb.AddTorque(axis * angle * 0.5f);
         }
+    }
+
+    private void FaceMovementDirection()
+    {
+        if (rb.velocity.x > 0.1 || rb.velocity.z > 0.1)
+        {
+            Vector3 fakefacing = Vector2.Perpendicular(new Vector2(-rb.velocity.x, -rb.velocity.z));
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(new Vector3(fakefacing.x, 0, fakefacing.y)), 1f);
+        }
+        
     }
 
     public void AddPart(GameObject g)
@@ -119,7 +132,7 @@ public class PlayerController : MonoBehaviour
             if (g.CompareTag("Leg"))
             {
                 g.transform.SetParent(null);
-                Destroy(gameObject.GetComponent<FixedJoint>());
+                Destroy(g.GetComponent<FixedJoint>());
                 g.GetComponent<Part>().interaction.gameObject.SetActive(true);
                 Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector3 force = Vector3.Normalize(new Vector3(transform.position.x - mouseWorldPos.x, transform.position.y, transform.position.z - mouseWorldPos.z));
