@@ -11,8 +11,6 @@ TagManager:
   - Movable
   - Key
   - Point
-  - Trap
-  - Alert
   layers:
   - Default
   - TransparentFX

@@ -20,7 +20,7 @@ public class EnergyManager : MonoBehaviour
     [SerializeField]
     private int minEnergy; //maxEnergy in the vid
     [SerializeField]
-    public int totalEnergy;
+    private int totalEnergy;
 
 
     // TIME
@@ -87,7 +87,6 @@ public class EnergyManager : MonoBehaviour
             restoreDuration = 10;
         }
     }
-
     private IEnumerator RestoreRoutine()
     {
         UpdateColor();
