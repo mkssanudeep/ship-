@@ -90,6 +90,7 @@ public class PlayerController : MonoBehaviour
         }
 
         colorShader.RadiusIndex = parts.Count;
+        alertRadius.radius = colorShader.CurrentRadius * 1.8f;
         //take input and transate it to the camera
         if (inputDisabledTimer < 0)
         {
@@ -230,7 +231,11 @@ public class PlayerController : MonoBehaviour
 
     public void AddPart(GameObject g)
     {
-        addPartSFX.Play();
+        if (addPartSFX != null)
+        {
+            addPartSFX.Play();
+        }
+        
         Debug.Log("adding part");
         if(AudioStaging.m_instance != null)
             AudioStaging.m_instance.musicStage += 1;
@@ -325,7 +330,11 @@ public class PlayerController : MonoBehaviour
             }
                 
             Debug.Log("yeet");
-            ejectSFX.Play();
+            if (ejectSFX != null)
+            {
+                ejectSFX.Play();
+            }
+            
 
             Vector3 position = new Vector3();
             Plane plane = new Plane(Vector3.up, 0);
