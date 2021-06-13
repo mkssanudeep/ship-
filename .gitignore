@@ -1,6 +1,13 @@
 *.vsconfig
 GMTK2021 3D/Library/ArtifactDB
 GMTK2021 3D/Library/SourceAssetDB
+GMTK2021 3D/Logs/shadercompiler-UnityShaderCompiler.exe0.log
+GMTK2021 3D/Library/SourceAssetDB-lock
+GMTK2021 3D/Library/SourceAssetDB
+GMTK2021 3D/Library/ArtifactDB-lock
+GMTK2021 3D/Library/ArtifactDB
+GMTK2021 3D/Library/ArtifactDB
+GMTK2021 3D/Library/CurrentLayout-default.dwlt
 GMTK2021 3D/Library/ArtifactDB-lock
 GMTK2021 3D/Library/SourceAssetDB-lock
 GMTK2021 3D/Library/ArtifactDB
@@ -2517,8 +2524,17 @@ GMTK2021 3D/Library/PackageCache/com.unity.ugui@1.0.0/Tests/Runtime/Util/Private
 GMTK2021 3D/Library/PackageCache/com.unity.ugui@1.0.0/Tests/Runtime/Util/UIBehaviourExtensions.cs
 GMTK2021 3D/Library/PackageCache/com.unity.ugui@1.0.0/Tests/Runtime/Util/UIBehaviourExtensions.cs.meta
 GMTK2021 3D/Library/PackageManager/ProjectCache
+GMTK2021 3D/Library/PackageManager/ProjectCache.md5
+GMTK2021 3D/Library/SceneVisibilityState.asset
+GMTK2021 3D/Library/SourceAssetDB
+GMTK2021 3D/Logs/shadercompiler-UnityShaderCompiler.exe0.log
 GMTK2021 3D/Library/SceneVisibilityState.asset
 GMTK2021 3D/Library/ScriptMapper
 GMTK2021 3D/Library/ShaderCache/EditorEncounteredVariants
 GMTK2021 3D/Library/SourceAssetDB
 GMTK2021 3D/Library/SourceAssetDB-lock
+GMTK2021 3D/Library/ArtifactDB
+GMTK2021 3D/Library/CurrentLayout-default.dwlt
+GMTK2021 3D/Library/ShaderCache/EditorEncounteredVariants
+GMTK2021 3D/Library/SourceAssetDB
+GMTK2021 3D/Logs/shadercompiler-UnityShaderCompiler.exe0.log
