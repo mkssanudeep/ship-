@@ -174,8 +174,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Radius_FallOff:
   - {x: 2, y: 0.5}
+  - {x: 3, y: 1}
   - {x: 4, y: 1}
-  - {x: 6, y: 1}
   RadiusGrowSpeed: 2
   RadiusIndex: 0
   CurrentRadius: 0

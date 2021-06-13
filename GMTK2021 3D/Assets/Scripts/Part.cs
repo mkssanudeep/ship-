@@ -7,6 +7,7 @@ public class Part : MonoBehaviour
     public InteractionField interaction;
     public bool charged;
     public Stun stun;
+    public ParticleSystem zap;
 
     public List<GameObject> groundTouching;
 
@@ -40,6 +41,13 @@ public class Part : MonoBehaviour
     {
         if (charged)
         {
+            if (collision.gameObject.CompareTag("Stalwart"))
+            {
+                ParticleSystem p = Instantiate(zap);
+                p.gameObject.transform.position = collision.contacts[0].point;
+                p.Play();
+            }
+            
             stun.Activate();
             charged = false;
         }
