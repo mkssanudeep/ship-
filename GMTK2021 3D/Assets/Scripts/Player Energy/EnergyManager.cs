@@ -36,9 +36,10 @@ public class EnergyManager : MonoBehaviour
     public bool rogueArmLeft = false;
     public bool rogueArmRight = false;
     public bool rogueLegRight = false;
-    public bool rogueLegLeft = false; 
-    
+    public bool rogueLegLeft = false;
 
+    public AudioSource yellowCharge;
+    public AudioSource shuttingDown;
     // Start is called before the first frame update
     void Start()
     {
@@ -136,10 +137,15 @@ public class EnergyManager : MonoBehaviour
         else if(totalEnergy <= 25 && totalEnergy > 10)
         {
             textEnergy.color = Color.yellow;
+            yellowCharge.Play();
         }
-        else
+        else if(totalEnergy <= 10)
         {
             textEnergy.color = Color.red;
+            if(totalEnergy == 1)
+            {
+                shuttingDown.Play();
+            }
         }
 
     }
