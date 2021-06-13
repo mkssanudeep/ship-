@@ -13,7 +13,7 @@ public class ShaderPointTracker : MonoBehaviour
     Coroutine RadiusCoroutine;
     float previousIndex;
 
-    float CurrentRadius = 0;
+    public float CurrentRadius = 0;
     float CurrentFallOff = 0;
 
     private void Start()

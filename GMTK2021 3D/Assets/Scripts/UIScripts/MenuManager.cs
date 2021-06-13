@@ -16,25 +16,22 @@ public class MenuManager : MonoBehaviour
     public GameObject loadingDot3;
     public GameObject shuttingDown;
 
-    private bool gameHasStarted = false;
+    public bool gameHasStarted = false;
 
-    public AudioSource notificationSFX;
-    public AudioSource uiZoomInSFX;
-    public AudioSource uiZoomOutSFX;
-
+    public static MenuManager m_instance;
+    
     // Start is called before the first frame update
     void Start()
     {
-        notificationSFX = GetComponent<AudioSource>();
-        uiZoomInSFX = GetComponent<AudioSource>();
-        uiZoomOutSFX = GetComponent<AudioSource>();
-
+        m_instance = this;
         StartCoroutine(StartupGame());
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!gameHasStarted)
+            return;
         if (Input.GetKey(KeyCode.P))
         {
             GamePaused();
@@ -43,13 +40,12 @@ public class MenuManager : MonoBehaviour
 
     IEnumerator StartupGame()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForFixedUpdate();
         mainMenuButtonPanel.SetActive(true);
 
     }
     public void TappedToPlay()
     {
-        notificationSFX.Play();
         mainMenuButtonPanel.SetActive(false);
         StartCoroutine(Loading());
         StartGame();
@@ -79,7 +75,6 @@ public class MenuManager : MonoBehaviour
 
     public void GamePaused()
     {
-        uiZoomInSFX.Play();
         gameUIPanel.SetActive(false);
         pauseMenuButtonPanel.SetActive(true);
         Time.timeScale = 0;
@@ -119,15 +114,12 @@ public class MenuManager : MonoBehaviour
 
     public void ContinueGame()
     {
-        notificationSFX.Play();
         gameUIPanel.SetActive(true);
         pauseMenuButtonPanel.SetActive(false);
-        uiZoomOutSFX.Play();
         Time.timeScale = 1;
     }
     public void BackToMainMenu()
     {
-        notificationSFX.Play();
         gameHasStarted = false; 
         gameUIPanel.SetActive(false);
         pauseMenuButtonPanel.SetActive(false);
@@ -137,7 +129,6 @@ public class MenuManager : MonoBehaviour
 
     public void Quit()
     {
-        notificationSFX.Play();
         Application.Quit();
     }
 }

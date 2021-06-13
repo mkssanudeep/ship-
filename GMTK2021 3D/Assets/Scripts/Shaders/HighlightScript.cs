@@ -20,8 +20,6 @@ public class HighlightScript : MonoBehaviour
     }
     public void TurnOnHighlights()
     {
-        Debug.Log("Turning on");
-
         if (Activated)
             return;
 
