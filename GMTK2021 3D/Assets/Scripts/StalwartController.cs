@@ -8,19 +8,23 @@ public enum AIState
 {
     Chase,
     Patrol,
-    Search
+    Search,
 }
 
 public class StalwartController : MonoBehaviour
 {
     public PlayerController player;
     private NavMeshAgent agent;
+    [SerializeField]
     private bool stunned;
+    public float pauseTime;
     public List<GameObject> patrolQueue;
     public int queueIndex;
 
     private Vector3 lastKnownPlayerPosition;
     private AIState state;
+
+    private bool alerted;
 
     private bool touchingPlayer;
     public float range;
@@ -47,11 +51,11 @@ public class StalwartController : MonoBehaviour
 
                 lastKnownPlayerPosition = player.transform.position;
                 state = AIState.Chase;
-                agent.speed = 3.5f;
+                agent.speed = 6;
             }
             else
             {
-                agent.speed = 2;
+                agent.speed = 3;
             }
             if (state == AIState.Chase)
             {
@@ -74,7 +78,6 @@ public class StalwartController : MonoBehaviour
             }
             else if (state == AIState.Search)
             {
-                Debug.Log("searching");
                 transform.rotation = new Quaternion(transform.rotation.x, transform.rotation.y+0.01f, transform.rotation.z, transform.rotation.w);
             }
             else if (state == AIState.Patrol)
@@ -157,18 +160,35 @@ public class StalwartController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        touchingPlayer = true;
-        attack.StartWindUp();
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            touchingPlayer = true;
+            attack.StartWindUp();
+        }
+        
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        touchingPlayer = false;
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            touchingPlayer = false;
+        }
+        
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Alert"))
+        {
+            state = AIState.Chase;
+            lastKnownPlayerPosition = player.transform.position;
+        }
     }
 
     private IEnumerator ChangeQueueIndex()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(pauseTime);
         queueIndex++;
         if (queueIndex == patrolQueue.Count)
         {
