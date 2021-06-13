@@ -28,8 +28,16 @@ public class EnergyManager : MonoBehaviour
     private DateTime nextEnergyTime; //Time at which one percent is depleted next. 
     
     public int restoreDuration = 10;
+    public int timePenalty = 0;
+    //Check for extra parts
+    public bool extraComponent = false; 
 
-
+    //ROGUE PARTS
+    public bool rogueArmLeft = false;
+    public bool rogueArmRight = false;
+    public bool rogueLegRight = false;
+    public bool rogueLegLeft = false; 
+    
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +45,7 @@ public class EnergyManager : MonoBehaviour
         PlayerPrefs.DeleteAll();
         if (!PlayerPrefs.HasKey("totalEnergy"))
         {
-            PlayerPrefs.SetInt("totalEnergy", 100);
+            PlayerPrefs.SetInt("totalEnergy", 30);
             Load();
             StartCoroutine(RestoreRoutine());
         }
@@ -49,8 +57,40 @@ public class EnergyManager : MonoBehaviour
         
     }
     
+
+    private void UpdateRestoreDuration()
+    {
+        if (extraComponent)
+        {
+            if (rogueArmLeft)
+            {
+                timePenalty += 1;
+            }
+            if (rogueArmRight)
+            {
+                timePenalty += 1;
+            }
+            if (rogueLegLeft)
+            {
+                timePenalty += 1;
+            }
+            if (rogueLegRight)
+            {
+                timePenalty += 1;
+            }
+            restoreDuration -= timePenalty;
+            Debug.Log(restoreDuration);
+        }
+        else
+        {
+            timePenalty = 0;
+            restoreDuration = 10;
+        }
+    }
     private IEnumerator RestoreRoutine()
     {
+        UpdateColor();
+        //UpdateRestoreDuration();
         UpdateTimer();
         UpdateEnergy();
         while (totalEnergy > minEnergy)
@@ -77,6 +117,8 @@ public class EnergyManager : MonoBehaviour
                 lastDepletedTime = DateTime.Now;
                 nextEnergyTime = counter; 
             }
+            UpdateColor();
+            //UpdateRestoreDuration();
             UpdateTimer();
             UpdateEnergy();
             Save();
@@ -85,6 +127,22 @@ public class EnergyManager : MonoBehaviour
 
     }
 
+    private void UpdateColor()
+    {
+        if(totalEnergy > 25)
+        {
+            textEnergy.color = Color.green;
+        }
+        else if(totalEnergy <= 25 && totalEnergy > 10)
+        {
+            textEnergy.color = Color.yellow;
+        }
+        else
+        {
+            textEnergy.color = Color.red;
+        }
+
+    }
     private void UpdateTimer()
     {
         if(totalEnergy <= minEnergy)

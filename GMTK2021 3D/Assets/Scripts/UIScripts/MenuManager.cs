@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        //SceneLoader.instance.LoadLevel("TestScene");
+        //SceneManager.LoadScene("Level 1");
         gameUIPanel.SetActive(true);
 
     }
@@ -47,5 +48,34 @@ public class MenuManager : MonoBehaviour
     {
         gameUIPanel.SetActive(false);
         pauseMenuButtonPanel.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void LoadNextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+
+    //PAUSE UI BUTTONS
+
+    public void ContinueGame()
+    {
+        gameUIPanel.SetActive(true);
+        pauseMenuButtonPanel.SetActive(false);
+        Time.timeScale = 1;
+    }
+    public void BackToMainMenu()
+    {
+        gameHasStarted = false; 
+        gameUIPanel.SetActive(false);
+        pauseMenuButtonPanel.SetActive(false);
+        mainMenuButtonPanel.SetActive(true);
+        //SceneManager.LoadScene("Main Menu");
+    }
+
+    public void Quit()
+    {
+
     }
 }

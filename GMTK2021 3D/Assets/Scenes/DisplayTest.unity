@@ -531,6 +531,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94c1fc66621e8874ca9d8df552d66b0c, type: 3}
+--- !u!1 &5435912044950696026 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2472064194176693528, guid: 94c1fc66621e8874ca9d8df552d66b0c, type: 3}
+  m_PrefabInstance: {fileID: 5435912044950696025}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5435912044950696027 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1965354505560249351, guid: 94c1fc66621e8874ca9d8df552d66b0c, type: 3}
+  m_PrefabInstance: {fileID: 5435912044950696025}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5435912044950696026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f06d615b81135243b6f58c722adba04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6643838083306332810
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -538,10 +554,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1115436986, guid: 114dbd8a47cbf4b47ad8f8e3ac4d1c5e, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 1510073846184350821, guid: 114dbd8a47cbf4b47ad8f8e3ac4d1c5e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5435912044950696026}
+    - target: {fileID: 3315627847048399640, guid: 114dbd8a47cbf4b47ad8f8e3ac4d1c5e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5435912044950696026}
+    - target: {fileID: 3731707541072994348, guid: 114dbd8a47cbf4b47ad8f8e3ac4d1c5e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5435912044950696027}
     - target: {fileID: 6643838083005347411, guid: 114dbd8a47cbf4b47ad8f8e3ac4d1c5e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
