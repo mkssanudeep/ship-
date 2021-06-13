@@ -8,7 +8,7 @@ public enum AIState
 {
     Chase,
     Patrol,
-    Search
+    Search,
 }
 
 public class StalwartController : MonoBehaviour
@@ -23,6 +23,8 @@ public class StalwartController : MonoBehaviour
 
     private Vector3 lastKnownPlayerPosition;
     private AIState state;
+
+    private bool alerted;
 
     private bool touchingPlayer;
     public float range;
@@ -49,11 +51,11 @@ public class StalwartController : MonoBehaviour
 
                 lastKnownPlayerPosition = player.transform.position;
                 state = AIState.Chase;
-                agent.speed = 5;
+                agent.speed = 6;
             }
             else
             {
-                agent.speed = 2;
+                agent.speed = 3;
             }
             if (state == AIState.Chase)
             {
@@ -173,6 +175,15 @@ public class StalwartController : MonoBehaviour
             touchingPlayer = false;
         }
         
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Alert"))
+        {
+            state = AIState.Chase;
+            lastKnownPlayerPosition = player.transform.position;
+        }
     }
 
     private IEnumerator ChangeQueueIndex()

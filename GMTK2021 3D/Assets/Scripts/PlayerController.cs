@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     public Vector2 inputVector;
     public GameObject playerDirReference;
-    public GameObject playerContainer;
     public float speed;
     public int health;
     public Stun stun;
@@ -28,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 fakefacing;
     public GrabZone grabZone;
     public float jumpForce;
+    public SphereCollider alertRadius;
     
     public bool grounded;
     private Material mat;
@@ -63,6 +63,9 @@ public class PlayerController : MonoBehaviour
         fakefacing = Vector2.Perpendicular(new Vector2(-rb.velocity.x, -rb.velocity.z));
         inputDisabledTimer -= Time.deltaTime;
         grounded = false;
+
+        alertRadius.radius = colorShader.CurrentRadius*1.8f;
+
         foreach (KeyValuePair<PartSlot, GameObject> kv in parts)
         {
             if (kv.Key == PartSlot.LeftLeg || kv.Key == PartSlot.RightLeg)
@@ -318,10 +321,10 @@ public class PlayerController : MonoBehaviour
             p.interaction.gameObject.SetActive(true);
             p.charged = true;
             Vector3 force = Vector3.Normalize(new Vector3(position.x - transform.position.x, transform.position.y, position.z - transform.position.z));
-            g.GetComponent<Rigidbody>().AddForce(force * 10, ForceMode.Impulse);
-            //rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-            force = new Vector3(force.x, -0.2f, force.z);
-            rb.AddForce(-force * 5, ForceMode.Impulse);
+            g.GetComponent<Rigidbody>().AddForce((force+Vector3.up*0.1f) * 15, ForceMode.Impulse);
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            force = new Vector3(force.x, -0.5f, force.z);
+            rb.AddForce(-force * 80, ForceMode.Impulse);
             DisableInput(0.5f);
 
             //Remove the key,value that held the object 
