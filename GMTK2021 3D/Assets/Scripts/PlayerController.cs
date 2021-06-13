@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum PartSlot
 {
@@ -50,6 +51,10 @@ public class PlayerController : MonoBehaviour
     public void Hit(int damage)
     {
         health -= damage;
+        if (health <= 0)
+        {
+            ResetLevel();
+        }
     }
 
     // Update is called once per frame
@@ -97,6 +102,8 @@ public class PlayerController : MonoBehaviour
         //if either slot has an arm, the character can carry a key
         if (parts.ContainsKey(PartSlot.RightArm) || parts.ContainsKey(PartSlot.LeftArm))
         {
+            Stabilize();
+            FaceMovementDirection();
             HoldItem();
         }
         //if both slots have an arm, the character can pull and push movable objects
@@ -331,5 +338,16 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    
+    public void ResetLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Trap"))
+        {
+            ResetLevel();
+        }
+    }
 }

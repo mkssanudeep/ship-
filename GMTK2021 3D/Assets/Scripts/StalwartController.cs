@@ -15,7 +15,9 @@ public class StalwartController : MonoBehaviour
 {
     public PlayerController player;
     private NavMeshAgent agent;
+    [SerializeField]
     private bool stunned;
+    public float pauseTime;
     public List<GameObject> patrolQueue;
     public int queueIndex;
 
@@ -47,7 +49,7 @@ public class StalwartController : MonoBehaviour
 
                 lastKnownPlayerPosition = player.transform.position;
                 state = AIState.Chase;
-                agent.speed = 3.5f;
+                agent.speed = 5;
             }
             else
             {
@@ -74,7 +76,6 @@ public class StalwartController : MonoBehaviour
             }
             else if (state == AIState.Search)
             {
-                Debug.Log("searching");
                 transform.rotation = new Quaternion(transform.rotation.x, transform.rotation.y+0.01f, transform.rotation.z, transform.rotation.w);
             }
             else if (state == AIState.Patrol)
@@ -157,18 +158,26 @@ public class StalwartController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        touchingPlayer = true;
-        attack.StartWindUp();
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            touchingPlayer = true;
+            attack.StartWindUp();
+        }
+        
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        touchingPlayer = false;
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            touchingPlayer = false;
+        }
+        
     }
 
     private IEnumerator ChangeQueueIndex()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(pauseTime);
         queueIndex++;
         if (queueIndex == patrolQueue.Count)
         {
