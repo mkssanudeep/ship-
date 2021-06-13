@@ -226,12 +226,13 @@ public class PlayerController : MonoBehaviour
     public void AddPart(GameObject g)
     {
         Debug.Log("adding part");
+        if(AudioStaging.m_instance != null)
+            AudioStaging.m_instance.musicStage += 1;
         if (g.CompareTag("Leg"))
         {
             if (SlotFree(0))
             {
                 AddPart(g, PartSlot.LeftLeg);
-
             }
             else if (SlotFree(1))
             {
@@ -309,6 +310,8 @@ public class PlayerController : MonoBehaviour
 
     public void EjectPart(GameObject g)
     {
+        if (AudioStaging.m_instance != null)
+            AudioStaging.m_instance.musicStage -= 1;
         Debug.Log("yeet");
         if (g != null)
         {
