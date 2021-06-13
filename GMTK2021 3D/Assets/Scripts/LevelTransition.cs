@@ -9,7 +9,7 @@ public class LevelTransition : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            SceneManager.LoadScene("End");
+            MenuManager.m_instance.EndGame();
         }
     }
 }

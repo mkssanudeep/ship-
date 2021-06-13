@@ -46,7 +46,7 @@ public class EnergyManager : MonoBehaviour
         PlayerPrefs.DeleteAll();
         if (!PlayerPrefs.HasKey("totalEnergy"))
         {
-            PlayerPrefs.SetInt("totalEnergy", 60);
+            PlayerPrefs.SetInt("totalEnergy", 100);
             Load();
             StartCoroutine(RestoreRoutine());
         }
@@ -112,7 +112,11 @@ public class EnergyManager : MonoBehaviour
                     counter = AddDuration(timeToAdd, restoreDuration);
                 }
                 else
+                {
+                    // died
+
                     break;
+                }
 
                 if (!MenuManager.m_instance.gameHasStarted)
                     break;

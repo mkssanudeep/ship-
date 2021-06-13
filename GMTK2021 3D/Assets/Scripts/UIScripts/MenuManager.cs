@@ -86,9 +86,14 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
+    public void EndGame()
+    {
+        StartCoroutine(GameOver());
+    }
+
+
     IEnumerator GameOver()
     {
-        Time.timeScale = 0;
         backGround.SetActive(true);
         shuttingDown.SetActive(true);
         loadingDot1.SetActive(true);
@@ -103,6 +108,7 @@ public class MenuManager : MonoBehaviour
         loadingDot2.SetActive(true);
         yield return new WaitForSeconds(0.4f);
         shuttingDown.SetActive(false);
+        backGround.SetActive(false);
         loadingDot1.SetActive(false);
         loadingDot2.SetActive(false);
         loadingDot3.SetActive(false);
@@ -124,6 +130,7 @@ public class MenuManager : MonoBehaviour
         gameUIPanel.SetActive(false);
         pauseMenuButtonPanel.SetActive(false);
         mainMenuButtonPanel.SetActive(true);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         //SceneManager.LoadScene("Main Menu");
     }
 
