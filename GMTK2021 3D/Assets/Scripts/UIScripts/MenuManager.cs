@@ -28,12 +28,9 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        while (gameHasStarted)
+        if (Input.GetKey(KeyCode.P))
         {
-            if (Input.GetKey(KeyCode.P))
-            {
-                GamePaused();
-            }
+            GamePaused();
         }
     }
 
