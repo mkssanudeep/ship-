@@ -15,6 +15,7 @@ public class StalwartController : MonoBehaviour
 {
     public PlayerController player;
     private NavMeshAgent agent;
+    public ParticleSystem zap;
     [SerializeField]
     private bool stunned;
     public float pauseTime;
@@ -24,13 +25,19 @@ public class StalwartController : MonoBehaviour
     private Vector3 lastKnownPlayerPosition;
     private AIState state;
 
+    public Material patrol;
+    public Material stun;
+    public Material chase;
+
     private bool alerted;
 
     private bool touchingPlayer;
     public float range;
 
-    public GameObject stunLight;
+    public MeshRenderer stunLight;
     public Attack attack;
+
+    public FieldOfView fov;
 
     // Start is called before the first frame update
     void Start()
@@ -42,19 +49,19 @@ public class StalwartController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        stunLight.SetActive(stunned);
         if (!stunned)
         {
             //path towards the player and stop when colliding
             if (Detect())
             {
-
+                
                 lastKnownPlayerPosition = player.transform.position;
                 state = AIState.Chase;
                 agent.speed = 6;
             }
             else
             {
+                stunLight.material = patrol;
                 agent.speed = 3;
             }
             if (state == AIState.Chase)
@@ -67,6 +74,7 @@ public class StalwartController : MonoBehaviour
                     state = AIState.Search;
                 }
 
+                stunLight.material = chase;
                 agent.SetDestination(lastKnownPlayerPosition);
                 agent.isStopped = touchingPlayer;
 
@@ -141,6 +149,9 @@ public class StalwartController : MonoBehaviour
         if (attack.active)
         {
             attack.active = false;
+            ParticleSystem p = Instantiate(zap);
+            p.gameObject.transform.position = player.transform.position;
+            p.Play();
             player.Hit(attack.damage);
         }
         
@@ -149,6 +160,7 @@ public class StalwartController : MonoBehaviour
     public void Stun()
     {
         stunned = true;
+        stunLight.material = stun;
         StartCoroutine(Unstun());
     }
 

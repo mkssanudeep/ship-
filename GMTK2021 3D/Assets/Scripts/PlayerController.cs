@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
     public GrabZone grabZone;
     public float jumpForce;
     public SphereCollider alertRadius;
+
+    public ParticleSystem puff;
     
     public bool grounded;
     private Material mat;
@@ -334,6 +336,10 @@ public class PlayerController : MonoBehaviour
             force = new Vector3(force.x, -0.5f, force.z);
             rb.AddForce(-force * 80, ForceMode.Impulse);
             DisableInput(0.5f);
+
+            ParticleSystem pS = Instantiate(puff);
+            pS.gameObject.transform.position = transform.position;
+            pS.Play();
 
             //Remove the key,value that held the object 
             PartSlot key = PartSlot.None;

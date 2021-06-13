@@ -133,6 +133,8 @@ MonoBehaviour:
   interaction: {fileID: 9036494174140989672}
   charged: 0
   stun: {fileID: 4963385553397001505}
+  zap: {fileID: 5144745485951602173, guid: bd5beaab21a41494c81885339c6df98a, type: 3}
+  groundTouching: []
 --- !u!114 &4963385553397001505
 MonoBehaviour:
   m_ObjectHideFlags: 0
