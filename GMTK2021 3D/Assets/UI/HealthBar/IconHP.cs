@@ -1,8 +1,4 @@
-﻿/**
- * IconHP.cs turns amount of life to show or hide the HP objects
- * Author:  Lisa Walkosz-Migliacio  http://evilisa.com  09/18/2018
- */
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
