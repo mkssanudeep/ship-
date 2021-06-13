@@ -8,7 +8,7 @@ public enum AIState
 {
     Chase,
     Patrol,
-    Search,
+    Search
 }
 
 public class StalwartController : MonoBehaviour
@@ -18,7 +18,6 @@ public class StalwartController : MonoBehaviour
     public ParticleSystem zap;
     [SerializeField]
     private bool stunned;
-    public float pauseTime;
     public List<GameObject> patrolQueue;
     public int queueIndex;
 
@@ -57,7 +56,7 @@ public class StalwartController : MonoBehaviour
                 
                 lastKnownPlayerPosition = player.transform.position;
                 state = AIState.Chase;
-                agent.speed = 6;
+                agent.speed = 6f;
             }
             else
             {
@@ -86,6 +85,7 @@ public class StalwartController : MonoBehaviour
             }
             else if (state == AIState.Search)
             {
+                Debug.Log("searching");
                 transform.rotation = new Quaternion(transform.rotation.x, transform.rotation.y+0.01f, transform.rotation.z, transform.rotation.w);
             }
             else if (state == AIState.Patrol)
@@ -172,35 +172,18 @@ public class StalwartController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            touchingPlayer = true;
-            attack.StartWindUp();
-        }
-        
+        touchingPlayer = true;
+        attack.StartWindUp();
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            touchingPlayer = false;
-        }
-        
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Alert"))
-        {
-            state = AIState.Chase;
-            lastKnownPlayerPosition = player.transform.position;
-        }
+        touchingPlayer = false;
     }
 
     private IEnumerator ChangeQueueIndex()
     {
-        yield return new WaitForSeconds(pauseTime);
+        yield return new WaitForSeconds(3);
         queueIndex++;
         if (queueIndex == patrolQueue.Count)
         {
