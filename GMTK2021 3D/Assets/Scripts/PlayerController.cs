@@ -316,12 +316,17 @@ public class PlayerController : MonoBehaviour
 
     public void EjectPart(GameObject g)
     {
-        if (AudioStaging.m_instance != null)
-            AudioStaging.m_instance.musicStage -= 1;
-        Debug.Log("yeet");
-        ejectSFX.Play();
+        
         if (g != null)
         {
+            if (AudioStaging.m_instance != null)
+            {
+                AudioStaging.m_instance.musicStage -= 1;
+            }
+                
+            Debug.Log("yeet");
+            ejectSFX.Play();
+
             Vector3 position = new Vector3();
             Plane plane = new Plane(Vector3.up, 0);
             plane.SetNormalAndPosition(Vector3.up, new Vector3(0, transform.position.y, 0));

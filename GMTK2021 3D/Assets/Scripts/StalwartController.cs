@@ -85,7 +85,6 @@ public class StalwartController : MonoBehaviour
             }
             else if (state == AIState.Search)
             {
-                Debug.Log("searching");
                 transform.rotation = new Quaternion(transform.rotation.x, transform.rotation.y+0.01f, transform.rotation.z, transform.rotation.w);
             }
             else if (state == AIState.Patrol)
