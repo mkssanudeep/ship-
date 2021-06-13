@@ -8,6 +8,8 @@ public class Part : MonoBehaviour
     public bool charged;
     public Stun stun;
 
+    public List<GameObject> groundTouching;
+
     HighlightScript highlight;
     // Start is called before the first frame update
     void Start()
@@ -25,7 +27,7 @@ public class Part : MonoBehaviour
             {
                 //DisablePhysics();
                 interaction.player.GetComponent<PlayerController>().AddPart(gameObject);
-                interaction.gameObject.SetActive(false);
+                
             }
         }
         else
@@ -41,12 +43,31 @@ public class Part : MonoBehaviour
             stun.Activate();
             charged = false;
         }
+
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            if (collision.gameObject.transform.position.y + 0.4f < transform.position.y)
+            {
+                if (!groundTouching.Contains(collision.gameObject))
+                {
+                    groundTouching.Add(collision.gameObject);
+                }
+            }
+        }
     }
 
     void DisablePhysics()
     {
         this.GetComponent<Rigidbody>().detectCollisions = false;
         this.GetComponent<Rigidbody>().isKinematic = true;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            groundTouching.Remove(collision.gameObject);
+        }
     }
 
 }

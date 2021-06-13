@@ -9,6 +9,8 @@ TagManager:
   - Floor
   - Arm
   - Movable
+  - Key
+  - Point
   layers:
   - Default
   - TransparentFX

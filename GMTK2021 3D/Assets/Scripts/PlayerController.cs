@@ -25,8 +25,14 @@ public class PlayerController : MonoBehaviour
     public ShaderPointTracker colorShader;
     private float inputDisabledTimer;
     private Vector2 fakefacing;
+    public GrabZone grabZone;
+    public float jumpForce;
+    
+    public bool grounded;
+    private Material mat;
 
     private GameObject movableObject;
+    private GameObject holding;
 
     private Dictionary<PartSlot, GameObject> parts = new Dictionary<PartSlot, GameObject>();
     public List<Vector3> partPositions;
@@ -35,6 +41,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        mat = GetComponent<MeshRenderer>().material;
+        mat.SetFloat("_Outline", 1);
         stepHelper = GetComponent<StepHelper>();
         stepHelper.enabled = false;
     }
@@ -49,14 +57,25 @@ public class PlayerController : MonoBehaviour
     {
         fakefacing = Vector2.Perpendicular(new Vector2(-rb.velocity.x, -rb.velocity.z));
         inputDisabledTimer -= Time.deltaTime;
+        grounded = false;
+        foreach (KeyValuePair<PartSlot, GameObject> kv in parts)
+        {
+            if (kv.Key == PartSlot.LeftLeg || kv.Key == PartSlot.RightLeg)
+            {
+                if (kv.Value.GetComponent<Part>().groundTouching.Count > 0)
+                {
+                    grounded = true;
+                }
+            }
+        }
 
         colorShader.RadiusIndex = parts.Count;
         //take input and transate it to the camera
         if (inputDisabledTimer < 0)
         {
             inputVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-            rb.velocity = playerDirReference.transform.TransformDirection(new Vector3(inputVector.x * (speed - parts.Count), 0, inputVector.y * (speed - parts.Count)));
-
+            Vector3 movement = playerDirReference.transform.TransformDirection(new Vector3(inputVector.x * (speed - parts.Count), 0, inputVector.y * (speed - parts.Count)));
+            rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -74,26 +93,33 @@ public class PlayerController : MonoBehaviour
             EjectPart(part);
         }
 
-        //if either slot has a leg, the character will stay upright and face the direction of movement
+       
+        //if either slot has an arm, the character can carry a key
+        if (parts.ContainsKey(PartSlot.RightArm) || parts.ContainsKey(PartSlot.LeftArm))
+        {
+            HoldItem();
+        }
+        //if both slots have an arm, the character can pull and push movable objects
+        if (parts.ContainsKey(PartSlot.RightArm) && parts.ContainsKey(PartSlot.LeftArm))
+        {
+            Grab();
+        }
+        
+        //if either slot has a leg, will hop up steps with ease
         if (parts.ContainsKey(PartSlot.LeftLeg) || parts.ContainsKey(PartSlot.RightLeg))
         {
             Stabilize();
             FaceMovementDirection();
-        }
-
-        if (parts.ContainsKey(PartSlot.RightArm) || parts.ContainsKey(PartSlot.LeftArm))
-        {
-            Pull();
-        }
-
-        //if both slots have a leg, the character will hop up steps with ease
-        if (parts.ContainsKey(PartSlot.LeftLeg) && parts.ContainsKey(PartSlot.RightLeg))
-        {
             stepHelper.enabled = true;
         }
         else
         {
             stepHelper.enabled = false;
+        }
+        //if both slots have a leg, the character will be able to jump
+        if (parts.ContainsKey(PartSlot.LeftLeg) && parts.ContainsKey(PartSlot.RightLeg))
+        {
+            Jump();
         }
     }
 
@@ -112,12 +138,49 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Pull()
+    private void HoldItem()
+    {
+        if (holding != null)
+        {
+            holding.transform.position = transform.position + (-transform.right*0.5f);
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            if (grabZone.keys.Count > 0)
+            {
+                holding = grabZone.keys[0];
+            }
+        }
+        else if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            if (grabZone.keys.Count > 0)
+            {
+                holding = null;
+            }
+        }
+    }
+
+    private void Jump()
     {
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            if (movableObject != null)
+            if (grounded)
             {
+                Debug.Log("Jumping");
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            }
+        }
+        
+    }
+
+
+    private void Grab()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            if (grabZone.movableObjects.Count > 0)
+            {
+                movableObject = grabZone.movableObjects[0];
                 movableObject.GetComponent<Rigidbody>().mass = 10;
                 FixedJoint j = movableObject.AddComponent<FixedJoint>();
                 j.connectedBody = rb;
@@ -125,7 +188,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKeyUp(KeyCode.Mouse1))
         {
-            if (movableObject != null)
+            if (grabZone.movableObjects.Count > 0)
             {
                 movableObject.GetComponent<Rigidbody>().mass = 1000000;
                 Destroy(movableObject.GetComponent<FixedJoint>());
@@ -224,6 +287,7 @@ public class PlayerController : MonoBehaviour
         FixedJoint j = g.AddComponent<FixedJoint>();
         j.anchor = partPositions[(int)slot];
         j.connectedBody = rb;
+        g.GetComponent<Part>().interaction.gameObject.SetActive(false);
     }
 
     public void EjectPart(GameObject g)
@@ -248,7 +312,7 @@ public class PlayerController : MonoBehaviour
             p.charged = true;
             Vector3 force = Vector3.Normalize(new Vector3(position.x - transform.position.x, transform.position.y, position.z - transform.position.z));
             g.GetComponent<Rigidbody>().AddForce(force * 10, ForceMode.Impulse);
-            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            //rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             force = new Vector3(force.x, -0.2f, force.z);
             rb.AddForce(-force * 5, ForceMode.Impulse);
             DisableInput(0.5f);
@@ -267,23 +331,5 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Movable"))
-        {
-            movableObject = collision.gameObject;
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Movable"))
-        {
-            if (movableObject == collision.gameObject)
-            {
-                Destroy(collision.gameObject.GetComponent<FixedJoint>());
-                movableObject = null;
-            }
-        }
-    }
+    
 }
