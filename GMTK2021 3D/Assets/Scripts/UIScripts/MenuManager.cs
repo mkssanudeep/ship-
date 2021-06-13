@@ -16,30 +16,31 @@ public class MenuManager : MonoBehaviour
     public GameObject loadingDot3;
     public GameObject shuttingDown;
 
-    private bool gameHasStarted = false; 
+    public bool gameHasStarted = false;
 
+    public static MenuManager m_instance;
     
     // Start is called before the first frame update
     void Start()
     {
+        m_instance = this;
         StartCoroutine(StartupGame());
     }
 
     // Update is called once per frame
     void Update()
     {
-        while (gameHasStarted)
+        if (!gameHasStarted)
+            return;
+        if (Input.GetKey(KeyCode.P))
         {
-            if (Input.GetKey(KeyCode.P))
-            {
-                GamePaused();
-            }
+            GamePaused();
         }
     }
 
     IEnumerator StartupGame()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForFixedUpdate();
         mainMenuButtonPanel.SetActive(true);
 
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum PartSlot
 {
@@ -58,26 +59,33 @@ public class PlayerController : MonoBehaviour
         mat.SetFloat("_Outline", 1);
         stepHelper = GetComponent<StepHelper>();
         stepHelper.enabled = false;
-/*
-        grabSFX = GetComponent<AudioSource>();
-        hitSFX = GetComponent<AudioSource>();
-        jumpSFX = GetComponent<AudioSource>();
-
-        ejectSFX = GetComponent<AudioSource>();
-        addPartSFX = GetComponent<AudioSource>();*/
     }
 
     public void Hit(int damage)
     {
         health -= damage;
+        if (health <= 0)
+        {
+            ResetLevel();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!MenuManager.m_instance.gameHasStarted)
+            return;
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ResetLevel();
+        }
+
         fakefacing = Vector2.Perpendicular(new Vector2(-rb.velocity.x, -rb.velocity.z));
         inputDisabledTimer -= Time.deltaTime;
         grounded = false;
+
+        alertRadius.radius = colorShader.CurrentRadius*1.8f;
+
         foreach (KeyValuePair<PartSlot, GameObject> kv in parts)
         {
             if (kv.Key == PartSlot.LeftLeg || kv.Key == PartSlot.RightLeg)
@@ -117,6 +125,8 @@ public class PlayerController : MonoBehaviour
         //if either slot has an arm, the character can carry a key
         if (parts.ContainsKey(PartSlot.RightArm) || parts.ContainsKey(PartSlot.LeftArm))
         {
+            Stabilize();
+            FaceMovementDirection();
             HoldItem();
         }
         //if both slots have an arm, the character can pull and push movable objects
@@ -318,7 +328,6 @@ public class PlayerController : MonoBehaviour
     {
         if (AudioStaging.m_instance != null)
             AudioStaging.m_instance.musicStage -= 1;
-        Debug.Log("yeet");
         ejectSFX.Play();
         if (g != null)
         {
@@ -338,10 +347,10 @@ public class PlayerController : MonoBehaviour
             p.interaction.gameObject.SetActive(true);
             p.charged = true;
             Vector3 force = Vector3.Normalize(new Vector3(position.x - transform.position.x, transform.position.y, position.z - transform.position.z));
-            g.GetComponent<Rigidbody>().AddForce(force * 10, ForceMode.Impulse);
+            g.GetComponent<Rigidbody>().AddForce((force+Vector3.up*0.1f) * 15, ForceMode.Impulse);
             //rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             force = new Vector3(force.x, -0.2f, force.z);
-            rb.AddForce(-force * 5, ForceMode.Impulse);
+            rb.AddForce(-force * 80, ForceMode.Impulse);
             DisableInput(0.5f);
 
             ParticleSystem pS = Instantiate(puff);
@@ -362,5 +371,16 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    
+    public void ResetLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Trap"))
+        {
+            ResetLevel();
+        }
+    }
 }
