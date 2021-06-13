@@ -110,6 +110,7 @@ MonoBehaviour:
   grabZone: {fileID: 5691385421200041199}
   jumpForce: 70
   alertRadius: {fileID: 0}
+  puff: {fileID: 2560989318129621611, guid: 1168a020ab40efe49a715573bca83400, type: 3}
   grounded: 0
   partPositions:
   - {x: 0, y: 0, z: -1}
