@@ -151,7 +151,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &950632565
 RectTransform:
   m_ObjectHideFlags: 0
@@ -569,6 +569,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6643838083306332812}
     - target: {fileID: 1965354505560249351, guid: 94c1fc66621e8874ca9d8df552d66b0c, type: 3}
+      propertyPath: shuttingDown
+      value: 
+      objectReference: {fileID: 950632564}
+    - target: {fileID: 1965354505560249351, guid: 94c1fc66621e8874ca9d8df552d66b0c, type: 3}
       propertyPath: mainMenuButtonPanel
       value: 
       objectReference: {fileID: 1115436986}
@@ -694,7 +698,7 @@ PrefabInstance:
       objectReference: {fileID: 5435912044950696027}
     - target: {fileID: 4580337462370846086, guid: 114dbd8a47cbf4b47ad8f8e3ac4d1c5e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5745742922664454837, guid: 114dbd8a47cbf4b47ad8f8e3ac4d1c5e, type: 3}
       propertyPath: m_IsActive
