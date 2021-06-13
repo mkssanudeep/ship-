@@ -16,12 +16,19 @@ public class MenuManager : MonoBehaviour
     public GameObject loadingDot3;
     public GameObject shuttingDown;
 
-    private bool gameHasStarted = false; 
+    private bool gameHasStarted = false;
 
-    
+    public AudioSource notificationSFX;
+    public AudioSource uiZoomInSFX;
+    public AudioSource uiZoomOutSFX;
+
     // Start is called before the first frame update
     void Start()
     {
+        notificationSFX = GetComponent<AudioSource>();
+        uiZoomInSFX = GetComponent<AudioSource>();
+        uiZoomOutSFX = GetComponent<AudioSource>();
+
         StartCoroutine(StartupGame());
     }
 
@@ -42,6 +49,7 @@ public class MenuManager : MonoBehaviour
     }
     public void TappedToPlay()
     {
+        notificationSFX.Play();
         mainMenuButtonPanel.SetActive(false);
         StartCoroutine(Loading());
         StartGame();
@@ -71,6 +79,7 @@ public class MenuManager : MonoBehaviour
 
     public void GamePaused()
     {
+        uiZoomInSFX.Play();
         gameUIPanel.SetActive(false);
         pauseMenuButtonPanel.SetActive(true);
         Time.timeScale = 0;
@@ -110,12 +119,15 @@ public class MenuManager : MonoBehaviour
 
     public void ContinueGame()
     {
+        notificationSFX.Play();
         gameUIPanel.SetActive(true);
         pauseMenuButtonPanel.SetActive(false);
+        uiZoomOutSFX.Play();
         Time.timeScale = 1;
     }
     public void BackToMainMenu()
     {
+        notificationSFX.Play();
         gameHasStarted = false; 
         gameUIPanel.SetActive(false);
         pauseMenuButtonPanel.SetActive(false);
@@ -125,6 +137,7 @@ public class MenuManager : MonoBehaviour
 
     public void Quit()
     {
+        notificationSFX.Play();
         Application.Quit();
     }
 }
