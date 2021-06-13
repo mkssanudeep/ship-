@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Stalwart
   - Leg
+  - Floor
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - UI
   - Characters
   - Walls
-  - 
+  - PostProcess
   - 
   - 
   - 
