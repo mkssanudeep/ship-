@@ -27,7 +27,16 @@ public class PlayerController : MonoBehaviour
     private Vector2 fakefacing;
     public GrabZone grabZone;
     public float jumpForce;
-    
+
+
+    public AudioSource grabSFX;
+    public AudioSource hitSFX;
+    public AudioSource jumpSFX;
+
+    public AudioSource ejectSFX;
+    public AudioSource addPartSFX;
+
+
     public bool grounded;
     private Material mat;
 
@@ -45,6 +54,13 @@ public class PlayerController : MonoBehaviour
         mat.SetFloat("_Outline", 1);
         stepHelper = GetComponent<StepHelper>();
         stepHelper.enabled = false;
+/*
+        grabSFX = GetComponent<AudioSource>();
+        hitSFX = GetComponent<AudioSource>();
+        jumpSFX = GetComponent<AudioSource>();
+
+        ejectSFX = GetComponent<AudioSource>();
+        addPartSFX = GetComponent<AudioSource>();*/
     }
 
     public void Hit(int damage)
@@ -166,6 +182,7 @@ public class PlayerController : MonoBehaviour
         {
             if (grounded)
             {
+                jumpSFX.Play();
                 Debug.Log("Jumping");
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
@@ -180,6 +197,7 @@ public class PlayerController : MonoBehaviour
         {
             if (grabZone.movableObjects.Count > 0)
             {
+                grabSFX.Play();
                 movableObject = grabZone.movableObjects[0];
                 movableObject.GetComponent<Rigidbody>().mass = 10;
                 FixedJoint j = movableObject.AddComponent<FixedJoint>();
@@ -208,6 +226,7 @@ public class PlayerController : MonoBehaviour
 
     public void AddPart(GameObject g)
     {
+        addPartSFX.Play();
         Debug.Log("adding part");
         if(AudioStaging.m_instance != null)
             AudioStaging.m_instance.musicStage += 1;
@@ -296,6 +315,7 @@ public class PlayerController : MonoBehaviour
         if (AudioStaging.m_instance != null)
             AudioStaging.m_instance.musicStage -= 1;
         Debug.Log("yeet");
+        ejectSFX.Play();
         if (g != null)
         {
             Vector3 position = new Vector3();
